@@ -1,6 +1,6 @@
-from flask import Flask, jsonify, request   #adding request
+from flask import Flask, jsonify, request   
 from flask_marshmallow import Marshmallow
-from marshmallow import fields, ValidationError #adding ValidationError
+from marshmallow import fields, ValidationError 
 import mysql.connector
 from mysql.connector import Error
 
@@ -161,8 +161,6 @@ def update_member(id):
             conn.close()
 
 @app.route("/Members/<int:id>", methods=["DELETE"])  
-
-
 def delete_member(id):          
     try:
         conn = get_db_connection()
@@ -170,10 +168,10 @@ def delete_member(id):
                 return jsonify({"Error": "Database connection failed"}), 500  
         cursor = conn.cursor()  
 
-        member_to_remove = (id,)  
+        member_to_remove = (str(id), )
 
-        cursor.execute("SELECT * FROM Members where id = %", member_to_remove)
-        member = cursor.fetchone()  
+        cursor.execute("SELECT * FROM Members where id = %s", member_to_remove)
+        member = cursor.fetchone()
         if not member:
             return jsonify({"error": "Member not found"}), 404
            
