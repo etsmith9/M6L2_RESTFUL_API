@@ -17,8 +17,16 @@ class MemberSchema(ma.Schema):
     class Meta:
         fields = ("name", "age", "id")
 
+class MemberUpdateSchema(ma.Schema):  
+    name = fields.String(required=True)  
+    age = fields.Integer(required=True) 
+
+    class Meta:
+        fields = ("name", "age")
+
 member_schema = MemberSchema() 
 members_schema = MemberSchema(many=True)  
+member_update_schema = MemberUpdateSchema() 
 
 class WorkoutSession(ma.Schema):
     member_id = fields.Integer(required=True)
@@ -120,7 +128,7 @@ def add_member():
 @app.route("/Members/<int:id>", methods=["PUT"])   
 def update_member(id):          
     try:
-        member_data = member_schema.load(request.json) 
+        member_data = member_update_schema.load(request.json) 
     except ValidationError as e:
         print(f"Error: {e}")
         return jsonify(e.messages), 400  
@@ -131,7 +139,7 @@ def update_member(id):
                 return jsonify({"Error": "Database connection failed"}), 500  
         cursor = conn.cursor()  
 
-        updated_member = (member_data['name'], member_data['age'])
+        updated_member = (member_data['name'], member_data['age'], id)
 
 
         query = 'UPDATE Members SET name = %s, age = %s WHERE id = %s'
