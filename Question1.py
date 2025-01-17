@@ -10,8 +10,8 @@ ma = Marshmallow(app)
 
 class MemberSchema(ma.Schema):  
     name = fields.String(required=True)  
-    age = fields.Integer(required=True) 
-    id = fields.Integer(required=True)
+    age = fields.String(required=True) 
+    id = fields.String(required=True)
 
 
     class Meta:
@@ -29,9 +29,9 @@ members_schema = MemberSchema(many=True)
 member_update_schema = MemberUpdateSchema() 
 
 class WorkoutSession(ma.Schema):
-    member_id = fields.Integer(required=True)
-    session_date = fields.Integer(required=True)
-    session_time = fields.Integer(required=True)
+    member_id = fields.String(required=True)
+    session_date = fields.String(required=True)
+    session_time = fields.String(required=True)
     activity = fields.String(required=True)
 
     class Meta:
